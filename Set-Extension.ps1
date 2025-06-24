@@ -4,21 +4,11 @@ function Assert-PolicyKeyExists {
     [string]$PolicyPath
   )
 
-  $ParentPath = Split-Path -Path $PolicyPath -Parent
-  
-  if ((Split-Path -Path $ParentPath -Leaf) -eq 'Edge' -and -not (Test-Path $ParentPath)) {
-
-    Write-Host "Parent registry path $($ParentPath) not found. Creating it..."
-
-    New-Item -Path $ParentPath | Out-Null
-
-  }
-
   if (-not (Test-Path $PolicyPath)) {
 
     Write-Host "Registry path $($PolicyPath) not found. Creating it..."
     
-    New-Item -Path $PolicyPath | Out-Null
+    New-Item -Path $PolicyPath -Force | Out-Null
     
   }
 
