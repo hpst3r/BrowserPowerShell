@@ -35,7 +35,10 @@ Function Add-ExtensionToForcelist {
   )
 
   if (-not (Test-Path $RegistryKey)) {
-    New-Item $RegistryKey
+    Write-Host `
+      "Registry key at $($RegistryKey) does not exist. Creating it."
+    
+    New-Item $RegistryKey -Force
   }
 
   # see if desired ExtensionID UpdateUrl combo already exists
@@ -150,7 +153,6 @@ Function Add-ChromiumExtension {
       "Attempting to add $($ExtensionID) to force install list at $($ForceInstallListRegistryPath)."
 
     Add-ExtensionToForcelist `
-      -ExtensionToForcelist `
       -ExtensionID $ExtensionID `
       -UpdateUrl $UpdateUrl `
       -RegistryKey $ForceInstallListRegistryPath
