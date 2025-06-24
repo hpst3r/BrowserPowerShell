@@ -179,7 +179,7 @@ Set-EdgePolicy `
 # ShowRecommendationsEnabled
 # https://learn.microsoft.com/en-us/deployedge/microsoft-edge-browser-policies/showrecommendationsenabled
 Set-EdgePolicy `
-  -PolicyPath $RecommendedPolicies `
+  -PolicyPath $EnforcedPolicies `
   -PropertyName 'ShowRecommendationsEnabled' `
   -DesiredValue 0 `
   -Description 'Disable Edge feature recommendation popups'
