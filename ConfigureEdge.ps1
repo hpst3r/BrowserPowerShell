@@ -259,6 +259,12 @@ Set-EdgePolicy `
   -DesiredValue 0 `
   -Description 'Disable the "Wallet" feature in Edge'
 
+Set-EdgePolicy `
+  -PolicyPath $EnforcedPolicies `
+  -PropertyName 'PasswordManagerEnabled' `
+  -DesiredValue 0 `
+  -Description 'Disable the Edge password manager'
+
 <#
 # ManagedFavorites
 # https://learn.microsoft.com/en-us/deployedge/microsoft-edge-browser-policies/managedfavorites
