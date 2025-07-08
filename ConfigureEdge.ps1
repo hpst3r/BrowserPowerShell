@@ -3,22 +3,12 @@ function Assert-PolicyKeyExists {
     [Parameter(Mandatory)]
     [string]$PolicyPath
   )
-
-  $ParentPath = Split-Path -Path $PolicyPath -Parent
   
-  if ((Split-Path -Path $ParentPath -Leaf) -eq 'Edge' -and -not (Test-Path $ParentPath)) {
-
-    Write-Host "Parent registry path $($ParentPath) not found. Creating it..."
-
-    New-Item -Path $ParentPath | Out-Null
-
-  }
-
   if (-not (Test-Path $PolicyPath)) {
 
     Write-Host "Registry path $($PolicyPath) not found. Creating it..."
     
-    New-Item -Path $PolicyPath | Out-Null
+    New-Item -Path $PolicyPath -Force | Out-Null
     
   }
 
@@ -46,6 +36,7 @@ function Set-EdgePolicy {
 
   # if the property's value is not already set to the desired value, set it.
   $CurrentValue = $EdgeProps.$PropertyName
+
   if ($CurrentValue -eq $DesiredValue) {
 
     Write-Host "Edge policy '$($PropertyName)' is already set to '$($DesiredValue)'. No changes will be made."
@@ -188,7 +179,7 @@ Set-EdgePolicy `
 # ShowRecommendationsEnabled
 # https://learn.microsoft.com/en-us/deployedge/microsoft-edge-browser-policies/showrecommendationsenabled
 Set-EdgePolicy `
-  -PolicyPath $RecommendedPolicies `
+  -PolicyPath $EnforcedPolicies `
   -PropertyName 'ShowRecommendationsEnabled' `
   -DesiredValue 0 `
   -Description 'Disable Edge feature recommendation popups'

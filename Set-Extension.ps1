@@ -4,21 +4,11 @@ function Assert-PolicyKeyExists {
     [string]$PolicyPath
   )
 
-  $ParentPath = Split-Path -Path $PolicyPath -Parent
-  
-  if ((Split-Path -Path $ParentPath -Leaf) -eq 'Edge' -and -not (Test-Path $ParentPath)) {
-
-    Write-Host "Parent registry path $($ParentPath) not found. Creating it..."
-
-    New-Item -Path $ParentPath | Out-Null
-
-  }
-
   if (-not (Test-Path $PolicyPath)) {
 
     Write-Host "Registry path $($PolicyPath) not found. Creating it..."
     
-    New-Item -Path $PolicyPath | Out-Null
+    New-Item -Path $PolicyPath -Force | Out-Null
     
   }
 
@@ -35,7 +25,10 @@ Function Add-ExtensionToForcelist {
   )
 
   if (-not (Test-Path $RegistryKey)) {
-    New-Item $RegistryKey
+    Write-Host `
+      "Registry key at $($RegistryKey) does not exist. Creating it."
+    
+    New-Item $RegistryKey -Force
   }
 
   # see if desired ExtensionID UpdateUrl combo already exists
@@ -71,7 +64,6 @@ Function Add-ExtensionToForcelist {
 
 }
 
-# TODO: this does not handle HKLM:\Software\Policies\Microsoft\Edge not existing
 Function Add-ChromiumExtension {
   param (
     [string]$ExtensionID,
@@ -100,7 +92,7 @@ Function Add-ChromiumExtension {
     Write-Host `
       "Extension parent key at path $($ExtensionsRegistryPath) does not exist. Creating it."
     
-    New-Item $ExtensionsRegistryPath
+    New-Item $ExtensionsRegistryPath -Force
 
   }
 
@@ -117,7 +109,7 @@ Function Add-ChromiumExtension {
     Write-Host `
       "Extension $($ExtensionID)'s registry key at $($KeyPath) does not exist. Creating it."
 
-    New-Item $KeyPath
+    New-Item $KeyPath -Force
 
   } else {
     Write-Host `
@@ -150,7 +142,6 @@ Function Add-ChromiumExtension {
       "Attempting to add $($ExtensionID) to force install list at $($ForceInstallListRegistryPath)."
 
     Add-ExtensionToForcelist `
-      -ExtensionToForcelist `
       -ExtensionID $ExtensionID `
       -UpdateUrl $UpdateUrl `
       -RegistryKey $ForceInstallListRegistryPath
@@ -220,15 +211,3 @@ Write-Host `
 
 Add-EdgeExtension `
   -ExtensionID 'cimighlppcgcoapaliogpjjdehbnofhn'
-
-# removing a force-installed extension from the force install list will remove the extension
-<#Function Remove-ChromiumExtension {
-  param (
-    [string]$ExtensionID,
-    [string]$ExtensionsRegistryPath = 'HKLM:\Software\Wow6432Node\Microsoft\Edge\Extensions',
-    [string]$ForceInstallListRegistryPath = 'HKLM:\Software\Policies\Microsoft\Edge\ExtensionInstallForcelist'
-  )
-
-  Foreach () {}
-
-}#>
