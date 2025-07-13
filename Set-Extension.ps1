@@ -8,7 +8,9 @@ function Assert-PolicyKeyExists {
 
     Write-Host "Registry path $($PolicyPath) not found. Creating it..."
     
-    New-Item -Path $PolicyPath -Force | Out-Null
+    $Item = New-Item -Path $PolicyPath -Force
+
+    Write-Verbose ($Item | Format-Table | Out-String)
     
   }
 
@@ -25,10 +27,14 @@ Function Add-ExtensionToForcelist {
   )
 
   if (-not (Test-Path $RegistryKey)) {
+
     Write-Host `
       "Registry key at $($RegistryKey) does not exist. Creating it."
     
-    New-Item $RegistryKey -Force
+    $Item = New-Item $RegistryKey -Force
+
+    Write-Verbose ($Item | Format-Table | Out-String)
+
   }
 
   # see if desired ExtensionID UpdateUrl combo already exists
@@ -40,7 +46,7 @@ Function Add-ExtensionToForcelist {
     
     if ($AlreadyExists) {
       Write-Host `
-        "Extension $($ExtensionID) is already registered for force installation."
+        "Extension ID $($ExtensionID) already exists in the force installation list. No changes were made."
       
       return
     }
@@ -58,9 +64,11 @@ Function Add-ExtensionToForcelist {
   }
 
   # create the desired Forcelist entry.
-  New-ItemProperty `
+  $Item = New-ItemProperty `
     -Path $RegistryKey `
     @ForcelistEntry
+
+  Write-Verbose ($Item | Format-Table | Out-String)
 
 }
 
@@ -92,7 +100,9 @@ Function Add-ChromiumExtension {
     Write-Host `
       "Extension parent key at path $($ExtensionsRegistryPath) does not exist. Creating it."
     
-    New-Item $ExtensionsRegistryPath -Force
+    $Item = New-Item $ExtensionsRegistryPath -Force
+
+    Write-Verbose ($Item | Format-Table | Out-String)
 
   }
 
@@ -109,7 +119,9 @@ Function Add-ChromiumExtension {
     Write-Host `
       "Extension $($ExtensionID)'s registry key at $($KeyPath) does not exist. Creating it."
 
-    New-Item $KeyPath -Force
+    $Item = New-Item $KeyPath -Force
+
+    Write-Verbose ($Item | Format-Table | Out-String)
 
   } else {
     Write-Host `
@@ -125,11 +137,13 @@ Function Add-ChromiumExtension {
     Write-Host `
       "Extension $($ExtensionID)'s update_url '$($ExistingUpdateUrl)' does not match requested $($UpdateUrl). Modifying it."
 
-    New-ItemProperty `
+    $Item = New-ItemProperty `
       -Path $KeyPath `
       -Name 'update_url' `
       -Value $UpdateUrl `
       -Force
+    
+    Write-Verbose ($Item | Format-Table | Out-String)
 
   } else {
     Write-Host `
@@ -189,25 +203,41 @@ Function Add-ChromeExtension {
 }
 
 # install uBlock Origin Lite for Chrome
-
 Write-Host `
-  'Installing uBlock Origin Lite for Google Chrome'
+  "`nInstalling uBlock Origin Lite for Google Chrome..." `
+  -ForegroundColor Blue
 
 Add-ChromeExtension `
   -ExtensionID 'ddkjiahejlhfcafbddmgiahcphecmpfh'
 
 # install Microsoft SSO extension for Chrome
-
 Write-Host `
-  'Installing Microsoft SSO extension for Google Chrome'
+  "`nInstalling Microsoft SSO extension for Google Chrome..." `
+  -ForegroundColor Blue
 
 Add-ChromeExtension `
   -ExtensionID 'ppnbnpeolgkicgegkbkbjmhlideopiji'
 
-# install uBlock Origin Lite for Edge
-
+# install 1PW for Chrome
 Write-Host `
-  'Installing uBlock Origin Lite for Microsoft Edge'
+  "`nInstalling 1Password for Google Chrome..." `
+  -ForegroundColor Blue
+
+Add-ChromeExtension `
+  -ExtensionID 'aeblfdkhhhdcdjpifhhbdiojplfjncoa'
+
+# install uBlock Origin Lite for Edge
+Write-Host `
+  "`nInstalling uBlock Origin Lite for Microsoft Edge..." `
+  -ForegroundColor Blue
 
 Add-EdgeExtension `
   -ExtensionID 'cimighlppcgcoapaliogpjjdehbnofhn'
+
+# install 1Password for Edge
+Write-Host `
+  "`nInstalling 1Password for Microsoft Edge..." `
+  -ForegroundColor Blue
+
+Add-EdgeExtension `
+  -ExtensionID 'dppgmdbiimibapkepcbdbmkaabgiofem'
