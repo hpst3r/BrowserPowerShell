@@ -78,12 +78,12 @@ $ChromeFeaturePolicies = @(
 
   # BrowserSignin
   # https://chromeenterprise.google/policies/#BrowserSignin
-  @{
-    PolicyPath   = $ChromeEnforcedPolicies
-    PropertyName = 'BrowserSignin'
-    DesiredValue = 0
-    Description  = 'Disable Google accounts in Chrome.'
-  },
+  # @{
+  #   PolicyPath   = $ChromeEnforcedPolicies
+  #   PropertyName = 'BrowserSignin'
+  #   DesiredValue = 0
+  #   Description  = 'Disable Google accounts in Chrome.'
+  # },
 
   # BrowserLabsEnabled
   # https://chromeenterprise.google/policies/#BrowserLabsEnabled

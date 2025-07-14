@@ -107,11 +107,11 @@ $DisableMiscFeatures = @(
   }
 
   # https://mozilla.github.io/policy-templates/#disablefirefoxaccounts
-  @{
-    PropertyName = 'DisableFirefoxAccounts'
-    DesiredValue = 1
-    Description  = 'Disable Firefox Sync account integration.'
-  }
+  # @{
+  #   PropertyName = 'DisableFirefoxAccounts'
+  #   DesiredValue = 1
+  #   Description  = 'Disable Firefox Sync account integration.'
+  # }
 
   # https://mozilla.github.io/policy-templates/#autofillcreditcardenabled
   @{
@@ -291,11 +291,11 @@ $SecurityPolicies = @(
   }
   
   # https://mozilla.github.io/policy-templates/#installaddonspermission
-  @{
-    PropertyName = 'InstallAddonsPermission\Default'
-    DesiredValue = 0
-    Description  = 'Block user installation of browser extensions.'
-  }
+  # @{
+  #   PropertyName = 'InstallAddonsPermission\Default'
+  #   DesiredValue = 0
+  #   Description  = 'Block user installation of browser extensions.'
+  # }
 
   # https://mozilla.github.io/policy-templates/#cookies
   @{
