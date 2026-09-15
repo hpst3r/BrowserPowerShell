@@ -85,6 +85,19 @@ $ChromeFeaturePolicies = @(
   #   Description  = 'Disable Google accounts in Chrome.'
   # },
 
+  # ChromeVariations
+  # https://chromeenterprise.google/policies/chrome-variations
+  # Variations are targeted A/B testing for 
+  # Set to 1 to disable cosmetic changes from shipping in Variations
+  # (targeted, gradual flights Google uses to deploy new features)
+  # This still allows Google to deploy security fixes via Variations
+  @{
+    PolicyPath   = $ChromeEnforcedPolicies
+    PropertyName = 'ChromeVariations'
+    DesiredValue = 1
+    Description  = 'Configure Chrome Variations to only deploy security fixes.'
+  }
+
   # BrowserLabsEnabled
   # https://chromeenterprise.google/policies/#BrowserLabsEnabled
   @{
